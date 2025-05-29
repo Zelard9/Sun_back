@@ -3,7 +3,7 @@ version: '3.8'
 services:
   spring:
     build: src/main
-    container_name: sun_app
+    container_name: SUN_back_app
     ports:
       - "8080:8080"
     networks:
