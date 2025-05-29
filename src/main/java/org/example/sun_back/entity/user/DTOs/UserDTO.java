@@ -9,6 +9,7 @@ import org.example.sun_back.entity.user.UserModel;
 import org.example.sun_back.entity.user.UserType;
 
 
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
