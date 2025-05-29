@@ -104,12 +104,12 @@ public class AuthServiceImpl implements AuthService {
 
     private void sendVerificationEmail(String email, String token) {
 
-        String url = "http://diassist-production.up.railway.app/api/auth/verify?token=" + token;  // update email and host for nginx!
+        String url = "https://sunback-production.up.railway.app/api/v1/auth/verify?token=" + token;  // update email and host for nginx!
 
         SimpleMailMessage message = new SimpleMailMessage();
         message.setTo(email);
         message.setSubject("Verification Email");
-        message.setText("Click the link to verify your account in DIASSIST: " + url);
+        message.setText("Click the link to verify your account in SUN: " + url);
         mailSender.send(message);
     }
 
