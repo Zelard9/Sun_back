@@ -6,4 +6,4 @@ RUN gradle clean build -x test -x check
 FROM openjdk:21-slim
 WORKDIR /app
 COPY --from=builder /app/build/libs/SUN_back-0.0.1-SNAPSHOT.jar app.jar
-ENTRYPOINT ["java", "-jar", "SUN_back-0.0.1-SNAPSHOT.jar"]
+ENTRYPOINT ["java", "-jar", "app.jar"]
