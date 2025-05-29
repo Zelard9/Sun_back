@@ -80,29 +80,27 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     @Transactional
-    public String register(String username, String email,  String password) {
+    public String register(String username, String email, String password, UserType typeUser) {
         if (userRepository.findByEmail(email).isPresent()) {
-            throw new RuntimeException("Username already taken");
+            throw new RuntimeException("Email already registered");
         }
-        try {
-            Role role = Role.ROLE_USER;
-            UserModel user = new UserModel();
-            user.setUsername(username);
-            user.setEmail(email);
-            user.setPassword(passwordEncoder.encode(password));
-            user.setRole(role);
-            VerificationToken verificationToken = new VerificationToken(user);
 
-            userRepository.save(user);
-            tokenRepository.save(verificationToken);
+        UserModel user = new UserModel();
+        user.setUsername(username);
+        user.setEmail(email);
+        user.setPassword(passwordEncoder.encode(password));
+        user.setTypeUser(typeUser);
+        user.setRole(Role.ROLE_USER);
+        user.setVerified(false);
 
-            sendVerificationEmail(user.getEmail(), verificationToken.getToken());
+        VerificationToken verificationToken = new VerificationToken(user);
+        userRepository.save(user);
+        tokenRepository.save(verificationToken);
 
-            return "User registered! Please check your email for verification.";
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+        sendVerificationEmail(user.getEmail(), verificationToken.getToken());
+        return "User registered! Please check your email.";
     }
+
 
     private void sendVerificationEmail(String email, String token) {
 

@@ -1,6 +1,7 @@
 package org.example.sun_back.controller;
 
 import org.example.sun_back.entity.user.DTOs.UserDTO;
+import org.example.sun_back.entity.user.DTOs.UserDTORegister;
 import org.example.sun_back.entity.user.UserModel;
 import org.example.sun_back.entity.user.UserRepository;
 import org.example.sun_back.service.AuthServiceImpl;
@@ -44,18 +45,20 @@ public class UserAuthController {
 
 
     @PostMapping("/register")
-    public ResponseEntity<String> register(@RequestBody Map<String, String> request) {
-        String username = request.get("username");
-        String email = request.get("email");
-        String password = request.get("password");
-
+    public ResponseEntity<String> register(@RequestBody UserDTORegister request) {
         try {
-            String response = authService.register(username, email, password);
+            String response = authService.register(
+                    request.getUsername(),
+                    request.getEmail(),
+                    request.getPassword(),
+                    request.getTypeUser()
+            );
             return ResponseEntity.ok(response);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
+
 
     @PostMapping("/login")
     public ResponseEntity<Map<String, String>> login(@RequestBody Map<String, String> request) {
