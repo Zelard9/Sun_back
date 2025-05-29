@@ -1,6 +1,8 @@
 package org.example.sun_back.controller;
 
+import jakarta.validation.Valid;
 import org.example.sun_back.entity.user.DTOs.UserDTO;
+import org.example.sun_back.entity.user.DTOs.UserDTOLogin;
 import org.example.sun_back.entity.user.DTOs.UserDTORegister;
 import org.example.sun_back.entity.user.UserModel;
 import org.example.sun_back.entity.user.UserRepository;
@@ -61,19 +63,23 @@ public class UserAuthController {
 
 
     @PostMapping("/login")
-    public ResponseEntity<Map<String, String>> login(@RequestBody Map<String, String> request) {
+    public ResponseEntity<Map<String, String>> login(@Valid @RequestBody UserDTOLogin request) {
         System.out.println("📥 LOGIN REQUEST: " + request);
-        System.out.println("📥 EMAIL: " + request.get("email"));
-        System.out.println("📥 PASSWORD: " + request.get("password"));
-        Map<String, String> accessTokens = authService.login(request.get("email"), request.get("password"));
+        System.out.println("📥 EMAIL: " + request.getEmail());
+        System.out.println("📥 PASSWORD: " + request.getPassword());
+
+        Map<String, String> accessTokens = authService.login(request.getEmail(), request.getPassword());
+
         Map<String, String> response = new HashMap<>();
         response.put("accessToken", accessTokens.get("accessToken"));
         response.put("refreshToken", accessTokens.get("refreshToken"));
+
         return ResponseEntity
                 .ok()
                 .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                 .body(response);
     }
+
 
     @GetMapping("/verify")
     public ResponseEntity<String> verifyEmail(@RequestParam String token) {
