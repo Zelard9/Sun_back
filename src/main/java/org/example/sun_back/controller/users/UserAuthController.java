@@ -53,7 +53,8 @@ public class UserAuthController {
                     request.getUsername(),
                     request.getEmail(),
                     request.getPassword(),
-                    request.getTypeUser()
+                    request.getTypeUser(),
+                    request.getPhoneNumber()
             );
             return ResponseEntity.ok(response);
         } catch (Exception e) {

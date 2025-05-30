@@ -85,7 +85,7 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     @Transactional
-    public String register(String username, String email, String password, UserType typeUser) {
+    public String register(String username, String email, String password, UserType typeUser, String phoneNumber) {
         if (userRepository.findByEmail(email).isPresent()) {
             throw new RuntimeException("Email already registered");
         }
@@ -93,6 +93,7 @@ public class AuthServiceImpl implements AuthService {
         UserModel user = new UserModel();
         user.setUsername(username);
         user.setEmail(email);
+        user.setPhoneNumber(phoneNumber);
         user.setPassword(passwordEncoder.encode(password));
         user.setTypeUser(typeUser);
         user.setRole(Role.ROLE_USER);
