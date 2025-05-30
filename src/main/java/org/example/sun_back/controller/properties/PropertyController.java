@@ -26,7 +26,7 @@ public class PropertyController {
     private final PropertyService propertyService;
     private final AuthServiceImpl authService;
 
-    @PostMapping
+    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<Property> createProperty(@RequestPart("data") PropertyCreateDTO dto, @RequestPart("images") List<MultipartFile> images
     ) {
         String email = authService.getAuthenticatedEmail();
