@@ -1,7 +1,13 @@
-package org.example.sun_back.service;
+package org.example.sun_back.service.users.serviceImpl;
 
-import org.example.sun_back.config.jwtConfig.JwtUtil;
+import org.example.sun_back.config.security.jwtConfig.JwtUtil;
 import org.example.sun_back.entity.user.*;
+import org.example.sun_back.entity.user.applic.Role;
+import org.example.sun_back.entity.user.applic.UserType;
+import org.example.sun_back.entity.user.applic.VerificationToken;
+import org.example.sun_back.entity.user.repositories.UserRepository;
+import org.example.sun_back.entity.user.repositories.VerificationTokenRepository;
+import org.example.sun_back.service.users.service.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -14,7 +20,6 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Map;
-import java.util.UUID;
 
 @Service
 public class AuthServiceImpl implements AuthService {

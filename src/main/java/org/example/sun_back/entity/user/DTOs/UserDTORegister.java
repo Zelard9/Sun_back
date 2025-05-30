@@ -5,7 +5,7 @@ import jakarta.persistence.Enumerated;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.example.sun_back.entity.user.UserType;
+import org.example.sun_back.entity.user.applic.UserType;
 
 @Data
 @AllArgsConstructor

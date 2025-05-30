@@ -1,9 +1,10 @@
-package org.example.sun_back.entity.user;
+package org.example.sun_back.entity.user.applic;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.example.sun_back.entity.user.UserModel;
 
 import java.util.Date;
 import java.util.UUID;

@@ -1,6 +1,6 @@
-package org.example.sun_back.service;
+package org.example.sun_back.service.users.serviceImpl;
 
-import org.example.sun_back.entity.user.UserRepository;
+import org.example.sun_back.entity.user.repositories.UserRepository;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;

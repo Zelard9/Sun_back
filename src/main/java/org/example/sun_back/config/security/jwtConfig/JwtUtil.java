@@ -1,4 +1,4 @@
-package org.example.sun_back.config.jwtConfig;
+package org.example.sun_back.config.security.jwtConfig;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;

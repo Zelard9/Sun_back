@@ -1,15 +1,16 @@
-package org.example.sun_back.service;
+package org.example.sun_back.service.users.serviceImpl;
 
 import org.example.sun_back.entity.user.DTOs.UserDTO;
 import org.example.sun_back.entity.user.DTOs.UserDTORegister;
 import org.example.sun_back.entity.user.UserModel;
-import org.example.sun_back.entity.user.UserRepository;
+import org.example.sun_back.entity.user.repositories.UserRepository;
+import org.example.sun_back.service.users.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-import static org.example.sun_back.service.UpdateBeanNonNull.copyNonNullProperties;
+import static org.example.sun_back.utils.UpdateBeanNonNull.copyNonNullProperties;
 
 @Service
 public class UserServiceImpl implements UserService {

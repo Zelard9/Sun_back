@@ -1,6 +1,6 @@
-package org.example.sun_back.service;
+package org.example.sun_back.service.users.service;
 
-import org.example.sun_back.entity.user.UserType;
+import org.example.sun_back.entity.user.applic.UserType;
 
 import java.util.Map;
 

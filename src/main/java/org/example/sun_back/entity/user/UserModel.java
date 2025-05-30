@@ -1,12 +1,17 @@
 package org.example.sun_back.entity.user;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.example.sun_back.entity.property.Property;
+import org.example.sun_back.entity.user.applic.Role;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.example.sun_back.entity.user.UserType;
+import org.example.sun_back.entity.user.applic.UserType;
+
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -33,6 +38,9 @@ public class UserModel implements UserDetails {
     @Enumerated(EnumType.STRING)
     private UserType typeUser;
 
+    @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore // Щоб не було циклів у JSON
+    private List<Property> properties = new ArrayList<>();
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)

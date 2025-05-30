@@ -1,4 +1,4 @@
-package org.example.sun_back.service;
+package org.example.sun_back.utils;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.BeanWrapper;

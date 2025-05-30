@@ -1,6 +1,7 @@
-package org.example.sun_back.entity.user;
+package org.example.sun_back.entity.user.repositories;
 
 
+import org.example.sun_back.entity.user.UserModel;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

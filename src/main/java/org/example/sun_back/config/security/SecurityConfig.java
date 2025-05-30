@@ -1,10 +1,9 @@
-package org.example.sun_back.config;
+package org.example.sun_back.config.security;
 
-import org.example.sun_back.config.jwtConfig.JwtFilter;
-import org.example.sun_back.service.CustomUserDetailService;
+import org.example.sun_back.config.security.jwtConfig.JwtFilter;
+import org.example.sun_back.service.users.serviceImpl.CustomUserDetailService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.ProviderManager;

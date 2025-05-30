@@ -1,10 +1,8 @@
-package org.example.sun_back.controller;
+package org.example.sun_back.controller.users;
 
 import org.example.sun_back.entity.user.DTOs.UserDTO;
-import org.example.sun_back.entity.user.DTOs.UserDTOLogin;
 import org.example.sun_back.entity.user.DTOs.UserDTORegister;
-import org.example.sun_back.entity.user.UserModel;
-import org.example.sun_back.service.UserService;
+import org.example.sun_back.service.users.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

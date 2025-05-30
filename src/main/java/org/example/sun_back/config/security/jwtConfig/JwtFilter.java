@@ -1,10 +1,10 @@
-package org.example.sun_back.config.jwtConfig;
+package org.example.sun_back.config.security.jwtConfig;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.example.sun_back.service.CustomUserDetailService;
+import org.example.sun_back.service.users.serviceImpl.CustomUserDetailService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;

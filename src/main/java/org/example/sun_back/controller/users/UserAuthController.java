@@ -1,12 +1,12 @@
-package org.example.sun_back.controller;
+package org.example.sun_back.controller.users;
 
 import jakarta.validation.Valid;
 import org.example.sun_back.entity.user.DTOs.UserDTO;
 import org.example.sun_back.entity.user.DTOs.UserDTOLogin;
 import org.example.sun_back.entity.user.DTOs.UserDTORegister;
 import org.example.sun_back.entity.user.UserModel;
-import org.example.sun_back.entity.user.UserRepository;
-import org.example.sun_back.service.AuthServiceImpl;
+import org.example.sun_back.entity.user.repositories.UserRepository;
+import org.example.sun_back.service.users.serviceImpl.AuthServiceImpl;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
