@@ -19,4 +19,7 @@ public interface PropertyService {
     List<PropertyResponseDTO> getPropertiesByUser(String userEmail);
     List<PropertyResponseDTO> getAllProperties();
     Page<PropertyResponseDTO> filterProperties(PropertyFilterDTO filter, int page, int size);
+    void removePropertyFromFavorites(String userEmail, Long propertyId);
+    void addPropertyToFavorites(String userEmail, Long propertyId);
+    List<PropertyResponseDTO> getFavoriteProperties(String userEmail);
 }

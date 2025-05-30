@@ -177,6 +177,42 @@ public class PropertyServiceImpl implements PropertyService {
         return base == null ? Specification.where(addition) : base.and(addition);
     }
 
+    @Transactional
+    @Override
+    public void addPropertyToFavorites(String userEmail, Long propertyId) {
+        UserModel user = userRepository.findByEmail(userEmail)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+        Property property = propertyRepository.findById(propertyId)
+                .orElseThrow(() -> new RuntimeException("Property not found"));
+
+        if (!user.getFavorites().contains(property)) {
+            user.getFavorites().add(property);
+            userRepository.save(user);
+        }
+    }
+
+    @Transactional
+    @Override
+    public void removePropertyFromFavorites(String userEmail, Long propertyId) {
+        UserModel user = userRepository.findByEmail(userEmail)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+        Property property = propertyRepository.findById(propertyId)
+                .orElseThrow(() -> new RuntimeException("Property not found"));
+
+        user.getFavorites().remove(property);
+        userRepository.save(user);
+    }
+
+    @Override
+    public List<PropertyResponseDTO> getFavoriteProperties(String userEmail) {
+        UserModel user = userRepository.findByEmail(userEmail)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        return user.getFavorites().stream()
+                .map(this::mapToResponseDto)
+                .collect(Collectors.toList());
+    }
+
 
 
 

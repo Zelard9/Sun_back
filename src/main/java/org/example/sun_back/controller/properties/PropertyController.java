@@ -83,4 +83,25 @@ public class PropertyController {
         return ResponseEntity.ok(result);
     }
 
+    @PostMapping("/favorites/{propertyId}")
+    public ResponseEntity<?> addFavorite(@PathVariable Long propertyId, @RequestHeader("Authorization") String auth) {
+        String email = authService.getAuthenticatedEmail();
+        propertyService.addPropertyToFavorites(email, propertyId);
+        return ResponseEntity.ok("Added to favorites");
+    }
+
+    @DeleteMapping("/favorites/{propertyId}")
+    public ResponseEntity<?> removeFavorite(@PathVariable Long propertyId) {
+        String email = authService.getAuthenticatedEmail();
+        propertyService.removePropertyFromFavorites(email, propertyId);
+        return ResponseEntity.ok("Removed from favorites");
+    }
+
+    @GetMapping("/favorites")
+    public List<PropertyResponseDTO> getFavorites() {
+        String email = authService.getAuthenticatedEmail();
+        return propertyService.getFavoriteProperties(userEmail);
+    }
+
+
 }

@@ -45,6 +45,15 @@ public class UserModel implements UserDetails {
     @JsonIgnore // Щоб не було циклів у JSON
     private List<Property> properties = new ArrayList<>();
 
+    @ManyToMany
+    @JoinTable(
+            name = "user_favorites",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "property_id")
+    )
+    @JsonIgnore // Щоб уникнути циклів при серіалізації
+    private List<Property> favorites = new ArrayList<>();
+
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private Role role;
