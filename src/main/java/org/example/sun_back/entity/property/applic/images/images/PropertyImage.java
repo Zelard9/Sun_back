@@ -1,5 +1,6 @@
 package org.example.sun_back.entity.property.applic.images.images;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -20,6 +21,6 @@ public class PropertyImage {
     private String url;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JsonManagedReference
+    @JsonBackReference
     private Property property;
 }
