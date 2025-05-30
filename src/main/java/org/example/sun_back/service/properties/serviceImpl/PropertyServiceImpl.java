@@ -203,10 +203,14 @@ public class PropertyServiceImpl implements PropertyService {
         userRepository.save(user);
     }
 
+    @Transactional
     @Override
     public List<PropertyResponseDTO> getFavoriteProperties(String userEmail) {
         UserModel user = userRepository.findByEmail(userEmail)
                 .orElseThrow(() -> new RuntimeException("User not found"));
+
+        // Примусово ініціалізуємо favorites
+        user.getFavorites().size();
 
         return user.getFavorites().stream()
                 .map(this::mapToResponseDto)
