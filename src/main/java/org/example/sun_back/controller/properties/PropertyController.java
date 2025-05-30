@@ -84,7 +84,7 @@ public class PropertyController {
     }
 
     @PostMapping("/favorites/{propertyId}")
-    public ResponseEntity<?> addFavorite(@PathVariable Long propertyId, @RequestHeader("Authorization") String auth) {
+    public ResponseEntity<?> addFavorite(@PathVariable Long propertyId) {
         String email = authService.getAuthenticatedEmail();
         propertyService.addPropertyToFavorites(email, propertyId);
         return ResponseEntity.ok("Added to favorites");
