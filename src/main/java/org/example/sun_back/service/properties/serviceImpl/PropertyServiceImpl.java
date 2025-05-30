@@ -1,6 +1,7 @@
 package org.example.sun_back.service.properties.serviceImpl;
 
 import lombok.RequiredArgsConstructor;
+import org.example.sun_back.entity.property.DTOs.PropertyResponseDTO;
 import org.example.sun_back.entity.property.Property;
 import org.example.sun_back.entity.property.applic.images.images.PropertyImage;
 import org.example.sun_back.entity.property.DTOs.PropertyCreateDTO;
@@ -30,7 +31,7 @@ public class PropertyServiceImpl implements PropertyService {
 
     @Override
     @Transactional
-    public Property createProperty(String userEmail, PropertyCreateDTO dto, List<MultipartFile> images) {
+    public PropertyResponseDTO createProperty(String userEmail, PropertyCreateDTO dto, List<MultipartFile> images) {
         UserModel user = userRepository.findByEmail(userEmail)
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
@@ -47,7 +48,8 @@ public class PropertyServiceImpl implements PropertyService {
         }
         property.setImages(imageEntities);
 
-        return propertyRepository.save(property);
+        Property saved = propertyRepository.save(property);
+        return mapToResponseDto(saved);
     }
 
     @Override
@@ -148,5 +150,29 @@ public class PropertyServiceImpl implements PropertyService {
         property.setDistrict(dto.getDistrict());
         property.setCity(dto.getCity());
     }
+
+    private PropertyResponseDTO mapToResponseDto(Property property) {
+        return PropertyResponseDTO.builder()
+                .id(property.getId())
+                .title(property.getTitle())
+                .address(property.getAddress())
+                .area(property.getArea())
+                .floors(property.getFloors())
+                .rooms(property.getRooms())
+                .isNewBuilding(property.isNewBuilding())
+                .status(property.getStatus())
+                .type(property.getType())
+                .condition(property.getCondition())
+                .price(property.getPrice())
+                .distanceFromCenter(property.getDistanceFromCenter())
+                .district(property.getDistrict())
+                .city(property.getCity())
+                .ownerEmail(property.getOwner().getEmail())
+                .imageUrls(property.getImages().stream()
+                        .map(img -> img.getUrl())
+                        .toList())
+                .build();
+    }
+
 }
 
