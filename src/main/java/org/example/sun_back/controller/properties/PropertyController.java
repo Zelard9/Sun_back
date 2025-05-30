@@ -2,6 +2,7 @@ package org.example.sun_back.controller.properties;
 
 import lombok.RequiredArgsConstructor;
 import org.example.sun_back.entity.property.DTOs.PropertyCreateDTO;
+import org.example.sun_back.entity.property.DTOs.PropertyResponseDTO;
 import org.example.sun_back.entity.property.DTOs.PropertyUpdateDTO;
 import org.example.sun_back.entity.property.Property;
 import org.example.sun_back.entity.user.UserModel;
@@ -27,10 +28,10 @@ public class PropertyController {
     private final AuthServiceImpl authService;
 
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<Property> createProperty(@RequestPart("data") PropertyCreateDTO dto, @RequestPart("images") List<MultipartFile> images
+    public ResponseEntity<PropertyResponseDTO> createProperty(@RequestPart("data") PropertyCreateDTO dto, @RequestPart("images") List<MultipartFile> images
     ) {
         String email = authService.getAuthenticatedEmail();
-        Property created = propertyService.createProperty(email, dto, images);
+        PropertyResponseDTO created = propertyService.createProperty(email, dto, images);
         return ResponseEntity.ok(created);
     }
 
