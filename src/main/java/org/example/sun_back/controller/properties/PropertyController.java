@@ -100,7 +100,7 @@ public class PropertyController {
     @GetMapping("/favorites")
     public List<PropertyResponseDTO> getFavorites() {
         String email = authService.getAuthenticatedEmail();
-        return propertyService.getFavoriteProperties(userEmail);
+        return propertyService.getFavoriteProperties(email);
     }
 
 
