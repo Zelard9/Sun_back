@@ -126,6 +126,7 @@ public class PropertyServiceImpl implements PropertyService {
     private Property mapCreateDtoToProperty(PropertyCreateDTO dto) {
         Property property = new Property();
         property.setTitle(dto.getTitle());
+        property.setDescription(dto.getDescription());
         property.setAddress(dto.getAddress());
         property.setArea(dto.getArea());
         property.setFloors(dto.getFloors());
@@ -143,6 +144,7 @@ public class PropertyServiceImpl implements PropertyService {
 
     private void mapUpdateDtoToProperty(PropertyUpdateDTO dto, Property property) {
         property.setTitle(dto.getTitle());
+        property.setDescription(dto.getDescription());
         property.setAddress(dto.getAddress());
         property.setArea(dto.getArea());
         property.setFloors(dto.getFloors());
@@ -161,6 +163,7 @@ public class PropertyServiceImpl implements PropertyService {
         return PropertyResponseDTO.builder()
                 .id(property.getId())
                 .title(property.getTitle())
+                .description(property.getDescription())
                 .address(property.getAddress())
                 .area(property.getArea())
                 .floors(property.getFloors())

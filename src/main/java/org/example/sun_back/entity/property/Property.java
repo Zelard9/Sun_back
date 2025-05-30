@@ -26,6 +26,7 @@ public class Property {
     private Long id;
 
     private String title;
+    private String description;
     private String address;
     private double area;
     private int floors;

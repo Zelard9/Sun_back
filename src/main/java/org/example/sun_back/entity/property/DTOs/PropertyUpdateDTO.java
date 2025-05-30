@@ -13,6 +13,7 @@ import java.util.List;
 @AllArgsConstructor
 public class PropertyUpdateDTO {
     private String title;
+    private String description;
     private String address;
     private double area;
     private int floors;
