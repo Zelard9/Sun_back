@@ -25,27 +25,25 @@ public class S3Service {
         this.amazonS3 = amazonS3;
     }
 
-    public String uploadFile(MultipartFile file) {
+    public String uploadFile(File file) {
         try {
-            String fileName = "uploads/" + UUID.randomUUID() + "_" + file.getOriginalFilename();
-            ObjectMetadata metadata = new ObjectMetadata();
-            metadata.setContentLength(file.getSize());
-            metadata.setContentType(file.getContentType());
+            String fileName = "uploads/" + System.currentTimeMillis() + "_" + file.getName();
 
-            PutObjectRequest request = new PutObjectRequest(
-                    bucketName,
-                    fileName,
-                    file.getInputStream(),
-                    metadata
-            ).withCannedAcl(CannedAccessControlList.PublicRead);
+            ObjectMetadata metadata = new ObjectMetadata();
+            metadata.setContentLength(file.length());
+
+            PutObjectRequest request = new PutObjectRequest(bucketName, fileName, file)
+                    .withMetadata(metadata); // ❌ без .withCannedAcl(...)
 
             amazonS3.putObject(request);
 
             return amazonS3.getUrl(bucketName, fileName).toString();
-        } catch (IOException e) {
-            throw new RuntimeException("❌ Помилка при завантаженні файлу в AWS S3", e);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException("Помилка завантаження файлу на S3", e);
         }
     }
+
 
     public void deleteFileFromUrl(String url) {
         String key = url.substring(url.indexOf("uploads/"));
