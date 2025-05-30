@@ -28,14 +28,16 @@ public class PropertyController {
     private final AuthServiceImpl authService;
 
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<PropertyResponseDTO> createProperty(@RequestPart("data") PropertyCreateDTO dto, @RequestPart("images") List<MultipartFile> images
+    public ResponseEntity<PropertyResponseDTO> createProperty(
+            @RequestPart("data") PropertyCreateDTO dto,
+            @RequestPart("images") List<MultipartFile> images
     ) {
         String email = authService.getAuthenticatedEmail();
         PropertyResponseDTO created = propertyService.createProperty(email, dto, images);
         return ResponseEntity.ok(created);
     }
 
-    @PutMapping("/{id}")
+    @PutMapping(value = "/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<Property> updateProperty(
             @PathVariable Long id,
             @RequestPart("data") PropertyUpdateDTO dto,
@@ -47,27 +49,25 @@ public class PropertyController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteProperty(@PathVariable Long id)
-    {
+    public ResponseEntity<?> deleteProperty(@PathVariable Long id) {
         String email = authService.getAuthenticatedEmail();
         propertyService.deleteProperty(email, id);
         return ResponseEntity.ok("Deleted");
     }
 
     @GetMapping("/me")
-    public ResponseEntity<List<Property>> getMyProperties()
-    {
+    public ResponseEntity<List<PropertyResponseDTO>> getMyProperties() {
         String email = authService.getAuthenticatedEmail();
         return ResponseEntity.ok(propertyService.getPropertiesByUser(email));
     }
 
     @GetMapping
-    public ResponseEntity<List<Property>> getAllProperties() {
+    public ResponseEntity<List<PropertyResponseDTO>> getAllProperties() {
         return ResponseEntity.ok(propertyService.getAllProperties());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Property> getById(@PathVariable Long id) {
+    public ResponseEntity<PropertyResponseDTO> getById(@PathVariable Long id) {
         return ResponseEntity.ok(propertyService.getPropertyById(id));
     }
 }

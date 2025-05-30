@@ -100,21 +100,27 @@ public class PropertyServiceImpl implements PropertyService {
     }
 
     @Override
-    public Property getPropertyById(Long id) {
-        return propertyRepository.findById(id)
+    public PropertyResponseDTO getPropertyById(Long id) {
+        Property property = propertyRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Property not found"));
+        return mapToResponseDto(property);
     }
 
     @Override
-    public List<Property> getPropertiesByUser(String userEmail) {
+    public List<PropertyResponseDTO> getPropertiesByUser(String userEmail) {
         UserModel user = userRepository.findByEmail(userEmail)
                 .orElseThrow(() -> new RuntimeException("User not found"));
-        return propertyRepository.findAllByOwner(user);
+
+        return propertyRepository.findAllByOwner(user).stream()
+                .map(this::mapToResponseDto)
+                .collect(Collectors.toList());
     }
 
     @Override
-    public List<Property> getAllProperties() {
-        return propertyRepository.findAll();
+    public List<PropertyResponseDTO> getAllProperties() {
+        return propertyRepository.findAll().stream()
+                .map(this::mapToResponseDto)
+                .collect(Collectors.toList());
     }
 
     private Property mapCreateDtoToProperty(PropertyCreateDTO dto) {
@@ -169,10 +175,8 @@ public class PropertyServiceImpl implements PropertyService {
                 .city(property.getCity())
                 .ownerEmail(property.getOwner().getEmail())
                 .imageUrls(property.getImages().stream()
-                        .map(img -> img.getUrl())
-                        .toList())
+                        .map(PropertyImage::getUrl)
+                        .collect(Collectors.toList()))
                 .build();
     }
-
 }
-

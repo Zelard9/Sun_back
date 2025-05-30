@@ -13,7 +13,7 @@ public interface PropertyService {
     PropertyResponseDTO createProperty(String userEmail, PropertyCreateDTO dto, List<MultipartFile> images);
     Property updateProperty(String userEmail, Long id, PropertyUpdateDTO dto, List<MultipartFile> newImages);
     void deleteProperty(String userEmail, Long id);
-    Property getPropertyById(Long id);
-    List<Property> getPropertiesByUser(String userEmail);
-    List<Property> getAllProperties();
+    PropertyResponseDTO getPropertyById(Long id);
+    List<PropertyResponseDTO> getPropertiesByUser(String userEmail);
+    List<PropertyResponseDTO> getAllProperties();
 }
