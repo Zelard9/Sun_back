@@ -1,6 +1,7 @@
 package org.example.sun_back.entity.property;
 
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -47,6 +48,7 @@ public class Property {
     private UserModel owner;
 
     @OneToMany(mappedBy = "property", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
     private List<PropertyImage> images;
 }
 
