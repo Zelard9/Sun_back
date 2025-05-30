@@ -61,7 +61,7 @@ public class PropertyController {
         return ResponseEntity.ok(propertyService.getPropertiesByUser(email));
     }
 
-    @GetMapping
+    @GetMapping("all")
     public ResponseEntity<List<PropertyResponseDTO>> getAllProperties() {
         return ResponseEntity.ok(propertyService.getAllProperties());
     }
