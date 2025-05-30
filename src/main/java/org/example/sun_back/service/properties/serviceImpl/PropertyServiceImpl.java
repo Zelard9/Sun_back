@@ -1,6 +1,8 @@
 package org.example.sun_back.service.properties.serviceImpl;
 
+import ch.qos.logback.core.model.PropertyModel;
 import lombok.RequiredArgsConstructor;
+import org.example.sun_back.entity.property.DTOs.PropertyFilterDTO;
 import org.example.sun_back.entity.property.DTOs.PropertyResponseDTO;
 import org.example.sun_back.entity.property.Property;
 import org.example.sun_back.entity.property.applic.images.images.PropertyImage;
@@ -12,6 +14,10 @@ import org.example.sun_back.entity.user.UserModel;
 import org.example.sun_back.entity.user.repositories.UserRepository;
 import org.example.sun_back.service.AWS3.S3Service;
 import org.example.sun_back.service.properties.service.PropertyService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -65,18 +71,24 @@ public class PropertyServiceImpl implements PropertyService {
         mapUpdateDtoToProperty(dto, existing);
 
         if (newImages != null && !newImages.isEmpty()) {
+            // Видаляємо старі файли з S3
             for (PropertyImage image : existing.getImages()) {
                 s3Service.deleteFileFromUrl(image.getUrl());
             }
+
+            // Завантажуємо нові
             List<PropertyImage> updatedImages = new ArrayList<>();
             for (MultipartFile file : newImages) {
                 String url = s3Service.uploadFile(file);
                 PropertyImage img = new PropertyImage();
                 img.setUrl(url);
-                img.setProperty(existing);
+                img.setProperty(existing); // встановлюємо зв'язок
                 updatedImages.add(img);
             }
-            existing.setImages(updatedImages);
+
+            // 🟢 ВАЖЛИВО: замість `setImages()` — чистимо і додаємо, щоби Hibernate знав про orphan removal
+            existing.getImages().clear();
+            existing.getImages().addAll(updatedImages);
         }
 
         return propertyRepository.save(existing);
@@ -102,26 +114,71 @@ public class PropertyServiceImpl implements PropertyService {
     @Override
     public PropertyResponseDTO getPropertyById(Long id) {
         Property property = propertyRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Property not found"));
+                .orElseThrow(() -> new RuntimeException("Property not found with id: " + id));
         return mapToResponseDto(property);
     }
 
     @Override
     public List<PropertyResponseDTO> getPropertiesByUser(String userEmail) {
         UserModel user = userRepository.findByEmail(userEmail)
-                .orElseThrow(() -> new RuntimeException("User not found"));
-
-        return propertyRepository.findAllByOwner(user).stream()
+                .orElseThrow(() -> new RuntimeException("User not found with email: " + userEmail));
+        List<Property> properties = propertyRepository.findAllByOwner(user);
+        return properties.stream()
                 .map(this::mapToResponseDto)
+                .collect(Collectors.toList());
+    }
+
+
+    @Transactional
+    @Override
+    public List<PropertyResponseDTO> getAllProperties() {
+        List<Property> properties = propertyRepository.findAll();
+        return properties.stream()
+                .map(property -> mapToResponseDto(property))
                 .collect(Collectors.toList());
     }
 
     @Override
-    public List<PropertyResponseDTO> getAllProperties() {
-        return propertyRepository.findAll().stream()
-                .map(this::mapToResponseDto)
-                .collect(Collectors.toList());
+    public Page<PropertyResponseDTO> filterProperties(PropertyFilterDTO filter, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+
+        Specification<Property> spec = null;
+
+        if (filter.getCity() != null) {
+            spec = addSpec(spec, (root, query, cb) -> cb.equal(root.get("city"), filter.getCity()));
+        }
+        if (filter.getDistrict() != null) {
+            spec = addSpec(spec, (root, query, cb) -> cb.equal(root.get("district"), filter.getDistrict()));
+        }
+        if (filter.getType() != null) {
+            spec = addSpec(spec, (root, query, cb) -> cb.equal(root.get("type"), filter.getType()));
+        }
+        if (filter.getStatus() != null) {
+            spec = addSpec(spec, (root, query, cb) -> cb.equal(root.get("status"), filter.getStatus()));
+        }
+        if (filter.getMinRooms() != null) {
+            spec = addSpec(spec, (root, query, cb) -> cb.greaterThanOrEqualTo(root.get("rooms"), filter.getMinRooms()));
+        }
+        if (filter.getMaxRooms() != null) {
+            spec = addSpec(spec, (root, query, cb) -> cb.lessThanOrEqualTo(root.get("rooms"), filter.getMaxRooms()));
+        }
+        if (filter.getMinPrice() != null) {
+            spec = addSpec(spec, (root, query, cb) -> cb.greaterThanOrEqualTo(root.get("price"), filter.getMinPrice()));
+        }
+        if (filter.getMaxPrice() != null) {
+            spec = addSpec(spec, (root, query, cb) -> cb.lessThanOrEqualTo(root.get("price"), filter.getMaxPrice()));
+        }
+
+        Page<Property> pageResult = propertyRepository.findAll(spec, pageable);
+        return pageResult.map(this::mapToResponseDto);
     }
+
+    private Specification<Property> addSpec(Specification<Property> base, Specification<Property> addition) {
+        return base == null ? Specification.where(addition) : base.and(addition);
+    }
+
+
+
 
     private Property mapCreateDtoToProperty(PropertyCreateDTO dto) {
         Property property = new Property();
@@ -177,6 +234,7 @@ public class PropertyServiceImpl implements PropertyService {
                 .district(property.getDistrict())
                 .city(property.getCity())
                 .ownerEmail(property.getOwner().getEmail())
+                .phoneNumber(property.getOwner().getPhoneNumber())
                 .imageUrls(property.getImages().stream()
                         .map(PropertyImage::getUrl)
                         .collect(Collectors.toList()))

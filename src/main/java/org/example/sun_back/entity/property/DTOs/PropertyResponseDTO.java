@@ -29,6 +29,7 @@ public class PropertyResponseDTO {
     private double distanceFromCenter;
     private String district;
     private String city;
-    private String ownerEmail; // або ownerId, як потрібно
+    private String ownerEmail;
+    private String phoneNumber;// або ownerId, як потрібно
     private List<String> imageUrls;
 }

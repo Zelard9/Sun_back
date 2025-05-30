@@ -16,6 +16,7 @@ import org.example.sun_back.entity.user.applic.UserType;
 public class UserDTO {
     private Long id;
     private String username;
+    private String phoneNumber;
     private String password;
     private String email;
     @Enumerated(EnumType.STRING)

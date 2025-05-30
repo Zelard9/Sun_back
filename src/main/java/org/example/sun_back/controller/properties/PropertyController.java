@@ -2,6 +2,7 @@ package org.example.sun_back.controller.properties;
 
 import lombok.RequiredArgsConstructor;
 import org.example.sun_back.entity.property.DTOs.PropertyCreateDTO;
+import org.example.sun_back.entity.property.DTOs.PropertyFilterDTO;
 import org.example.sun_back.entity.property.DTOs.PropertyResponseDTO;
 import org.example.sun_back.entity.property.DTOs.PropertyUpdateDTO;
 import org.example.sun_back.entity.property.Property;
@@ -9,6 +10,7 @@ import org.example.sun_back.entity.user.UserModel;
 import org.example.sun_back.service.properties.service.PropertyService;
 import org.example.sun_back.service.users.service.AuthService;
 import org.example.sun_back.service.users.serviceImpl.AuthServiceImpl;
+import org.springframework.data.domain.Page;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -70,4 +72,15 @@ public class PropertyController {
     public ResponseEntity<PropertyResponseDTO> getById(@PathVariable Long id) {
         return ResponseEntity.ok(propertyService.getPropertyById(id));
     }
+
+    @GetMapping("/filter")
+    public ResponseEntity<Page<PropertyResponseDTO>> filterProperties(
+            PropertyFilterDTO filter,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size
+    ) {
+        Page<PropertyResponseDTO> result = propertyService.filterProperties(filter, page, size);
+        return ResponseEntity.ok(result);
+    }
+
 }

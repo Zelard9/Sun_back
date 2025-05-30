@@ -49,8 +49,10 @@ public class S3Service {
 
     public void deleteFileFromUrl(String url) {
         String key = url.substring(url.indexOf("uploads/"));
+        System.out.println("Deleting S3 object: bucket=" + bucketName + ", key=" + key);
         amazonS3.deleteObject(bucketName, key);
     }
+
 
     public String getFileUrl(String fileName) {
         return amazonS3.getUrl(bucketName, fileName).toString();

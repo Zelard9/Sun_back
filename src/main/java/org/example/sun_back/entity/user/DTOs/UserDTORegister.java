@@ -13,6 +13,7 @@ import org.example.sun_back.entity.user.applic.UserType;
 public class UserDTORegister {
     private String username;
     private String password;
+    private String phoneNumber;
     private String email;
     @Enumerated(EnumType.STRING)
     private UserType typeUser;
